@@ -3,6 +3,9 @@
 \usepackage[a4paper, total={7in, 9in}]{geometry}
 \usepackage{titlesec}
 \usepackage{float}
+\usepackage{subfig}
+%\usepackage{caption}
+%\usepackage{subcaption}
 \usepackage[font=small,labelfont=bf]{caption}
 \graphicspath{ {images/} }
 
@@ -135,11 +138,11 @@ In this section we will be looking for local pokemon communities based on their 
 \hline
 \multicolumn{1}{|l|}{\textbf{Pokemon}} &
   \multicolumn{1}{l|}{\textbf{Frequency}} \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
+Kartana  & 178 \\ \hline
+Incineroar  & 177 \\ \hline
+Primarina  & 172 \\ \hline
+Mimikyu  & 170 \\ \hline
+Volcarona  & 169 \\ \hline
 \end{tabular}
 \caption{Most frequent Pokemons in local communities}
 \label{tab:my-table}
@@ -153,14 +156,42 @@ In this section we will be looking for local pokemon communities based on their 
 \hline
 \multicolumn{1}{|l|}{\textbf{Pokemon}} &
   \multicolumn{1}{l|}{\textbf{Frequency}} \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
-8  & 0.458 \\ \hline
+Roserade  & 43 \\ \hline
+Miltank  & 42 \\ \hline
+Magnezone  & 37 \\ \hline
+Hitmonlee  & 37 \\ \hline
+Armaldo  & 31 \\ \hline
 \end{tabular}
 \caption{Least frequent Pokemons in local communities}
 \label{tab:my-table}
 \end{table}
+
+%
+%\begin{figure}
+%\centering
+%\begin{subfigure}%{.5\textwidth}
+%  \centering
+%  \includegraphics[width=.4\linewidth]{Kartana.png}
+%  \caption{Best Pokemon}
+%  \label{fig:sub1}
+%\end{subfigure}%
+%\begin{subfigure}{.5\textwidth}
+%  \centering
+%  \includegraphics[width=.4\linewidth]{Armaldo.png}
+%  \caption{Worst Pokemon}
+%  \label{fig:sub2}
+%\end{subfigure}
+%\caption{Best and Worst Pokemon based on Affinity Communities}
+%\label{fig:test}
+%\end{figure}
+%
+\begin{figure}[H]
+    \centering
+    \subfloat[\centering Best Pokemon]{{\includegraphics[width=5cm]{Kartana.png} }}%
+    \qquad
+    \subfloat[\centering Worst Pokemon]{{\includegraphics[width=5cm]{Armaldo.png} }}%
+    \caption{Best and Worst Pokemon based on Affinity Communities}%
+    \label{fig:example}%
+\end{figure}
 
 \end{document}
