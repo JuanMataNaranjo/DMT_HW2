@@ -34,22 +34,29 @@ def compute_top_k(map__node_id__score, remove_pokemon, k=20):
     return list__node_id__score[:k]
 
 
-def generate_topic(pokemon_set, graph):
+def generate_topic(pokemon_set, graph, neighbours=False):
     """
     Function that will return a topic dictionary based on the pokemon set given in inputs. Pokemons related with this
     topic will have a value of 1
 
     :param pokemon_set: Topics (list or set)
+    :param graph: Graph from which neighbours will be fetched
+    :param neighbours: Boolean. If set to False we will consider topic only the provided pokemon sets. If set to True
+        we will consider the topic all the pokemons that have high affinity to those of the pokemon set
     :return: Dict
     """
     topic_dict = dict.fromkeys(list(graph.nodes), 0)
     # Loop over the pokemon sets
-    for pokemon in pokemon_set:
-        # Get all the pokemons that have high affinity with the pokemons in the input
-        topic = list(graph.neighbors(pokemon))
-        # Add a 1 to those pokemons in the general dictionary
-        for i in topic:
-            topic_dict[i] = 1
+    if neighbours:
+        for pokemon in pokemon_set:
+            # Get all the pokemons that have high affinity with the pokemons in the input
+            topic = list(graph.neighbors(pokemon))
+            # Add a 1 to those pokemons in the general dictionary
+            for i in topic:
+                topic_dict[i] = 1
+    else:
+        for pokemon in pokemon_set:
+            topic_dict[pokemon] = 1
 
     return topic_dict
 
@@ -114,6 +121,7 @@ def main_part_1():
     graph = graph_from_tsv('data/pkmn_graph_data.tsv')
 
     team_size = 6
+    topic_generator_with_neighbours=False
 
     set_A = ['Pikachu']
     set_B = ['Venusaur', 'Charizard', 'Blastoise']
@@ -126,12 +134,21 @@ def main_part_1():
     teams = {}
     # Loop over all the sets of teams
     for key, values in sets.items():
-        topic = generate_topic(values, graph)
+        topic = generate_topic(values, graph, neighbours=topic_generator_with_neighbours)
         pagerank = nx.pagerank(graph, personalization=topic, alpha=.33)
         topk = compute_top_k(pagerank, remove_pokemon=values, k=team_size-len(values))
         teams['team_' + key[-1]] = set([i[0] for i in topk] + values)
 
-    print(teams)
+    print('Set of Pokemons using Set_A')
+    print(teams['team_A'])
+    print('==================')
+    print('Set of Pokemons using Set_B')
+    print(teams['team_B'])
+    print('==================')
+    print('Set of Pokemons using Set_C')
+    print(teams['team_C'])
+    print('==================')
+    print('==================')
 
     set_1 = ['Charizard']
     set_2 = ['Venusaur']
@@ -155,7 +172,36 @@ def main_part_1():
         topk = compute_top_k(pagerank, remove_pokemon=values, k=team_size - len(values))
         teams['team_' + key[-1]] = set([i[0] for i in topk] + values)
 
-    print(teams)
+    print('Set of Pokemons using Charizard')
+    print(teams['team_1'])
+    print('==================')
+    print('Set of Pokemons using Venusaur')
+    print(teams['team_2'])
+    print('==================')
+    print('Set of Pokemons using Kingdra')
+    print(teams['team_3'])
+    print('==================')
+    print('Set of Pokemons using Charizard and Venusaur')
+    print(teams['team_4'])
+    print('==================')
+    print('Set of Pokemons using Charizard and Kingdra')
+    print(teams['team_5'])
+    print('==================')
+    print('Set of Pokemons using Venusaur and Kingdra')
+    print(teams['team_6'])
+    print('==================')
+    print('==================')
+    print('Number of team members inside the Team(Charizard, Venusaur) that '
+          'are neither in Team(Charizard) nor in Team(Venusaur)')
+    print(len(teams['team_4'].difference(teams['team_1'].union(teams['team_2']))))
+    print('==================')
+    print('Number of team members inside the Team(Charizard, Kingdra) that '
+          'are neither in Team(Charizard) nor in Team(Kingdra)')
+    print(len(teams['team_5'].difference(teams['team_1'].union(teams['team_3']))))
+    print('==================')
+    print('Number of team members inside the Team(Venusaur, Kingdra) that '
+          'are neither in Team(Venusaur) nor in Team(Kingdra)')
+    print(len(teams['team_6'].difference(teams['team_2'].union(teams['team_3']))))
 
 
 def main_part_2():
@@ -197,6 +243,8 @@ def main_part_2():
     top5 = df.head(5)
     tail5 = df.tail(5)
 
+    top5.to_excel('top5.xlsx')
+    tail5.to_excel('tail5.xlsx')
     print(top5)
     print(tail5)
 

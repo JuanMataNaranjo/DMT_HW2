@@ -1,0 +1,166 @@
+\documentclass[10pt]{article}
+\usepackage{graphicx}
+\usepackage[a4paper, total={7in, 9in}]{geometry}
+\usepackage{titlesec}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
+\graphicspath{ {images/} }
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        %\vspace*{1cm}
+            
+        \begin{center}
+        \includegraphics[width=1.1\textwidth]{sapienza.png}
+        \end{center}        
+    
+        \vspace{0.8cm}
+
+        \Huge
+        \textbf{Data Mining Technology for Business and Society}
+            
+        \vspace{0.5cm}
+        \LARGE
+        Homework 1
+            
+        \vspace{1.5cm}
+            
+        Tran Luong Bang -  \textit{tran.1956419@studenti.uniroma1.it} \\ Juan Mata Naranjo - \textit{matanaranjo.1939671@studenti.uniroma1.it}
+            
+    \end{center}
+\end{titlepage}
+
+
+\section{Part 1.1}
+
+Tran part\footnote{GitHub Repository: https://github.com/JuanMataNaranjo/DMT\_HW2}
+
+\newpage
+
+\section{Part 1.2}
+
+Tran part
+
+\newpage
+
+\section{Part 2.1}
+
+In this section we will be using Topic Specific PageRank to find optimal teams using a damping factor of 0,33. In bold are the pokemons around which the ideal teams will formed.
+
+\paragraph{Best team of 6 Pokemon using Set A as input:}
+
+\begin{center}
+\{Gengar, Sirfetch-d, Dragonite, \textbf{Pikachu}, Kingdra, Lucario\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Set B as input:}
+
+\begin{center}
+\{\textbf{Venusaur}, Dusclops, Torkoal, \textbf{Blastoise}, \textbf{Charizard}, Urshifu\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Set C as input:}
+
+\begin{center}
+\{\textbf{Milotic}, \textbf{Dracovish}, Tyranitar, Cinderace, \textbf{Excadrill}, \textbf{Whimsicott}\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Charizard as input:}
+
+\begin{center}
+\{Venusaur, Grimmsnarl, Torkoal, Clefairy, Groudon, \textbf{Charizard}\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Venusaur as input:}
+
+\begin{center}
+\{\textbf{Venusaur}, Dusclops, Porygon2, Torkoal, Charizard, Stakataka\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Kingdra as input:}
+
+\begin{center}
+\{Tornadus, Politoed, Tsareena, \textbf{Kingdra}, Togedemaru, Kyogre\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Charizard and Venusaur as input:}
+
+\begin{center}
+\{\textbf{Venusaur}, Dusclops, Torkoal, \textbf{Charizard}, Groudon, Stakataka\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Charizard and Kingdra as input:}
+
+\begin{center}
+\{Politoed, \textbf{Charizard}, Raichu, \textbf{Kingdra}, Bronzong, Sableye\}
+\end{center}
+
+\paragraph{Best team of 6 Pokemon using Venusaur and Kingdra as input:}
+
+\begin{center}
+\{\textbf{Venusaur}, Politoed, Tapu Koko, \textbf{Kingdra}, Bronzong, Corviknight\}
+\end{center}
+
+\textbf{Number of team members inside the Team(Charizard, Venusaur) that are neither in Team(Charizard) nor in Team(Venusaur):} 0
+
+\
+
+\textbf{Number of team members inside the Team(Charizard, Kingdra) that are neither in Team(Charizard) nor in Team(Kingdra):} 3
+
+\
+
+\textbf{Number of team members inside the Team(Venusaur, Kingdra) that are neither in Team(Venusaur) nor in Team(Kingdra):} 3
+
+\
+
+The reason for which the number of team members inside the Team(Charizard, Venusaur) that are neither in Team(Charizard) nor in Team(Venusaur) is 0 is because Charizard and Venusaur have a high affinity.
+
+\section{Part 2.2}
+
+In this section we will be looking for local pokemon communities based on their battle affinity. For this purpose we will look for the \textit{ideal} community for each pokemon (best community is that which minimizes the conductance) using different damping factors.When doing this we will also take into consideration two constraints: (i) Communities with a conductance value of 0 or 1 are not considered as valid communities and (ii) Communities with more than 140 nodes (Pokemons) are not considered as valid communities (this is the reason for which in the output tsv file we don't hacve communities greater than 140 pokemons). Based on this analysis we will report the Pokemons that appear in the most number of communities (we will interpret these as the pokemons that have highest affinity overall) and those which appear in least communities (these pokemons will not have very high affinity with most of the other pokemons, better not keep these pokemons ;) ).
+
+\paragraph{Five most frequent Pokemon in local communities:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{1}{|l|}{\textbf{Pokemon}} &
+  \multicolumn{1}{l|}{\textbf{Frequency}} \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+\end{tabular}
+\caption{Most frequent Pokemons in local communities}
+\label{tab:my-table}
+\end{table}
+
+\paragraph{Five least frequent Pokemon in local communities:}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\multicolumn{1}{|l|}{\textbf{Pokemon}} &
+  \multicolumn{1}{l|}{\textbf{Frequency}} \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+8  & 0.458 \\ \hline
+\end{tabular}
+\caption{Least frequent Pokemons in local communities}
+\label{tab:my-table}
+\end{table}
+
+\end{document}
