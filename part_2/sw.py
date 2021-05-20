@@ -1,13 +1,16 @@
 import networkx as nx
-import numpy as np
 import pandas as pd
 import csv
-import os
-import matplotlib.pyplot as plt
-from collections import defaultdict
+from operator import itemgetter
 
 
 def graph_from_tsv(path):
+    """
+    From a tsv file generate a graph (unweighted graph)
+
+    :param path:
+    :return:
+    """
     input_file_handler = open(path, 'r', encoding="utf-8")
     tsv_reader = csv.reader(input_file_handler, delimiter='\t')
     tsv_reader.__next__()
@@ -118,9 +121,15 @@ def compute_good_local_community(graph, seed_node_id, alpha=0.9):
 
 
 def main_part_1():
+    """
+    Run code for exercise 2.1
+    """
+    # Construct graph
     graph = graph_from_tsv('data/pkmn_graph_data.tsv')
 
+    # Select the size of the teams
     team_size = 6
+    # Specify mode in which we want to create the topics (topics will be based only on the initial team members)
     topic_generator_with_neighbours=False
 
     set_A = ['Pikachu']
@@ -132,13 +141,18 @@ def main_part_1():
             'set_C': set_C}
 
     teams = {}
-    # Loop over all the sets of teams
+    # Loop over all the set of teams
     for key, values in sets.items():
+        # Create dictionary setting 1 for the pokemons that belong to the topic)
         topic = generate_topic(values, graph, neighbours=topic_generator_with_neighbours)
+        # Compute page ranke
         pagerank = nx.pagerank(graph, personalization=topic, alpha=.33)
+        # Based on the page rank get the top 6 pokemons (excluding those pokemons that are already part of the initial
+        # team)
         topk = compute_top_k(pagerank, remove_pokemon=values, k=team_size-len(values))
         teams['team_' + key[-1]] = set([i[0] for i in topk] + values)
 
+    # Print results
     print('Set of Pokemons using Set_A')
     print(teams['team_A'])
     print('==================')
@@ -150,6 +164,7 @@ def main_part_1():
     print('==================')
     print('==================')
 
+    # We will now perform the same analysis but with a new set of pokemons
     set_1 = ['Charizard']
     set_2 = ['Venusaur']
     set_3 = ['Kingdra']
@@ -191,6 +206,8 @@ def main_part_1():
     print(teams['team_6'])
     print('==================')
     print('==================')
+
+    # Finally we will look at the intersections between the teams
     print('Number of team members inside the Team(Charizard, Venusaur) that '
           'are neither in Team(Charizard) nor in Team(Venusaur)')
     print(len(teams['team_4'].difference(teams['team_1'].union(teams['team_2']))))
@@ -205,14 +222,22 @@ def main_part_1():
 
 
 def main_part_2():
+    """
+    Run code for exercise 2.2
+    """
     graph = graph_from_tsv('data/pkmn_graph_data.tsv')
     output_path = 'data/output.tsv'
 
+    # List of alpha values we will investigate
     damping_factors = [0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5, 0.45, 0.4, 0.35, 0.3,
                        0.25, 0.2, 0.15, 0.1, 0.05]
 
+    # Set initial lists and dictionaries which we will be filling out throughout the next loop
     pokemons = list(graph.nodes)
     pokemon_frequency = dict.fromkeys(list(graph.nodes), 0)
+
+    # We will reuse the code provided to use during the Lab. We will adjust the code such that we force the communities
+    # to have a cardinality of at least 140 pokemons.
 
     # List in which we will store all the final results (already with the best community)
     results = []
@@ -230,12 +255,15 @@ def main_part_2():
         for i in best_factor[0]:
             pokemon_frequency[i] = pokemon_frequency[i] + 1
 
+    results_sorted = sorted(results, key=itemgetter(0))
+
+    # Write all the results into a final tsv file
     print('...writing tsv file...')
     with open(output_path, 'w', newline='') as out_file:
         tsv_writer = csv.writer(out_file, delimiter='\t')
         tsv_writer.writerow(['pokemon_name', 'number_of_nodes_in_the_local_comunity',
                              'conductance_value_of_the_local_comunity'])
-        for row in results:
+        for row in results_sorted:
             tsv_writer.writerow([row[0], row[1], row[3]])
 
     sort_dict = dict(sorted(pokemon_frequency.items(), key=lambda x: x[1], reverse=True))
@@ -250,6 +278,6 @@ def main_part_2():
 
 
 if __name__:
-    #main_part_1()
+    main_part_1()
     main_part_2()
 
